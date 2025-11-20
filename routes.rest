@@ -10,27 +10,28 @@ Content-Type: application/json
 
 {
   "firstname": "Levi",
-  "lastname": "Odiram",
+  "lastname": "Odira",
   "email": "leviodira@aaa.com",
-  "age": "Blue5",
-  "major": "7/25/1994",
-  "gpa": "leviodira",
-  "course": "Levi Odiram",
+  "age": "32",
+  "major": "Applied Science",
+  "gpa": "5",
+  "course": "WDD230",
   "ipaddress": "192.168.1.1"
 }
 
 ### Update user by ID
-PUT http://localhost:3000/users/690986cf39c7d3c9207b1348
+PUT http://localhost:3000/users/691e6edb1c6ea940b0d89f85
 Content-Type: application/json
 
 {
- "firstname": "Levi",
-  "lastname": "Odiram",
+ 
+  "firstname": "Levi",
+  "lastname": "Odira",
   "email": "leviodira@aaa.com",
-  "favoriteColor": "Blue5",
-  "birthday": "7/25/1994",
-  "username": "leviodira",
-  "name": "Levi Odiram",
+  "age": "50",
+  "major": "Information Technology",
+  "gpa": "4.7",
+  "course": "TEFL",
   "ipaddress": "192.168.1.1"
 }
 
