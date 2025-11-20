@@ -9,31 +9,24 @@ POST http://localhost:3000/courses
 Content-Type: application/json
 
 {
-  "firstname": "Levi",
-  "lastname": "Odira",
-  "email": "leviodira@aaa.com",
-  "age": "32",
-  "major": "Applied Science",
-  "gpa": "5",
-  "course": "WDD230",
-  "ipaddress": "192.168.1.1"
+  "title": "Software Development Principles",
+  "code": "CSE 370",
+  "creditHours": "3",
+  "instructor": "Dr. Jesse Eisenberg",
+  "description": "This course provides an overview of software development principles and practices."
 }
 
 ### Update user by ID
-PUT http://localhost:3000/courses/691e6edb1c6ea940b0d89f85
+PUT http://localhost:3000/courses/691ee381925e15cc573c73f2
 Content-Type: application/json
 
 {
- 
-  "firstname": "Levi",
-  "lastname": "Odira",
-  "email": "leviodira@aaa.com",
-  "age": "50",
-  "major": "Information Technology",
-  "gpa": "4.7",
-  "course": "TEFL",
-  "ipaddress": "192.168.1.1"
+  "title": "Introduction to Software Development",
+  "code": "CSE111",
+  "creditHours": "3",
+  "instructor": "Dr. Amanda Brooks",
+  "description": "This course provides an overview of software development principles and practices."
 }
 
 ### Delete user by ID
-DELETE http://localhost:3000/courses/691e8cfe47272eac369ee835
+DELETE http://localhost:3000/courses/691ee381925e15cc573c73f2
