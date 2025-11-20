@@ -1,0 +1,39 @@
+### Get all users
+GET http://localhost:3000/courses
+
+### Get single user by ID
+GET http://localhost:3000/courses/691e711d1c6ea940b0d89f8a
+
+### Create new user
+POST http://localhost:3000/courses
+Content-Type: application/json
+
+{
+  "firstname": "Levi",
+  "lastname": "Odira",
+  "email": "leviodira@aaa.com",
+  "age": "32",
+  "major": "Applied Science",
+  "gpa": "5",
+  "course": "WDD230",
+  "ipaddress": "192.168.1.1"
+}
+
+### Update user by ID
+PUT http://localhost:3000/courses/691e6edb1c6ea940b0d89f85
+Content-Type: application/json
+
+{
+ 
+  "firstname": "Levi",
+  "lastname": "Odira",
+  "email": "leviodira@aaa.com",
+  "age": "50",
+  "major": "Information Technology",
+  "gpa": "4.7",
+  "course": "TEFL",
+  "ipaddress": "192.168.1.1"
+}
+
+### Delete user by ID
+DELETE http://localhost:3000/courses/691e8cfe47272eac369ee835
