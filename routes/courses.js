@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const coursesController = require('../controllers/courses');
+const { validateRequest } = require('../controllers/courses');  // ← ADDED
 
 // GET all courses
 router.get('/', coursesController.getAll);
@@ -10,10 +11,10 @@ router.get('/', coursesController.getAll);
 router.get('/:id', coursesController.getSingle);
 
 // POST create new course
-router.post('/', coursesController.createCourse);
+router.post('/', validateRequest, coursesController.createCourse);     // ← ADDED
 
 // PUT update course
-router.put('/:id', coursesController.updateCourse);
+router.put('/:id', validateRequest, coursesController.updateCourse);   // ← ADDED
 
 // DELETE course
 router.delete('/:id', coursesController.deleteCourse);

@@ -1,95 +1,99 @@
 const mongodb = require('../data/database');
 const ObjectId = require('mongodb').ObjectId;
 
-// GET ALL COURSES
+// VALIDATION MIDDLEWARE (added)
+const validateRequest = (req, res, next) => {
+  const errors = [];
+  const { title, code, creditHours, instructor, description } = req.body;
+
+  if (!title || typeof title !== 'string' || title.trim() === '') 
+    errors.push('title is required and must be a string');
+  if (!code || typeof code !== 'string' || code.trim().length < 3) 
+    errors.push('code is required and minimum 3 characters');
+  if (!creditHours || !Number.isInteger(Number(creditHours)) || creditHours < 1 || creditHours > 10) 
+    errors.push('creditHours must be integer 1-10');
+  if (!instructor || typeof instructor !== 'string' || instructor.trim() === '') 
+    errors.push('instructor is required and must be a string');
+  if (!description || typeof description !== 'string' || description.trim() === '') 
+    errors.push('description is required and must be a string');
+
+  if (errors.length > 0) {
+    return res.status(400).json({ errors });
+  }
+  next();
+};
+
 const getAll = async (req, res) => {
-    const result = await mongodb.getDatabase().db().collection('Courses').find();
-    result.toArray().then((courses) => {
-        res.setHeader('Content-Type', 'application/json');
-        res.status(200).json(courses);
-    });
+  const result = await mongodb.getDatabase().db().collection('Courses').find();
+  result.toArray().then((courses) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.status(200).json(courses);
+  });
 };
 
-// GET COURSE BY ID
 const getSingle = async (req, res) => {
-    const courseId = new ObjectId(req.params.id);
-    const result = await mongodb.getDatabase().db().collection('Courses').find({ _id: courseId });
-
-    result.toArray().then((courses) => {
-        res.setHeader('Content-Type', 'application/json');
-        res.status(200).json(courses[0]);
-    });
+  const courseId = new ObjectId(req.params.id);
+  const result = await mongodb.getDatabase().db().collection('Courses').find({ _id: courseId });
+  result.toArray().then((courses) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.status(200).json(courses[0]);
+  });
 };
 
-// CREATE COURSE
 const createCourse = async (req, res) => {
+  validateRequest(req, res, async () => {       // ← WRAPPED
     const course = {
-        title: req.body.title,
-        code: req.body.code,
-        creditHours: req.body.creditHours,
-        instructor: req.body.instructor,
-        description: req.body.description
+      title: req.body.title.trim(),
+      code: req.body.code.trim(),
+      creditHours: Number(req.body.creditHours),
+      instructor: req.body.instructor.trim(),
+      description: req.body.description.trim()
     };
 
-    const response = await mongodb
-        .getDatabase()
-        .db()
-        .collection('Courses')
-        .insertOne(course);
-
+    const response = await mongodb.getDatabase().db().collection('Courses').insertOne(course);
     if (response.acknowledged) {
-        res.status(204).send();
+      res.status(204).send();
     } else {
-        res.status(500).json(response.error || 'Error creating course.');
+      res.status(500).json(response.error || 'Error creating course.');
     }
+  });
 };
 
-// UPDATE COURSE
 const updateCourse = async (req, res) => {
+  validateRequest(req, res, async () => {       // ← WRAPPED
     const courseId = new ObjectId(req.params.id);
-
     const course = {
-        title: req.body.title,
-        code: req.body.code,
-        creditHours: req.body.creditHours,
-        instructor: req.body.instructor,
-        description: req.body.description
+      title: req.body.title.trim(),
+      code: req.body.code.trim(),
+      creditHours: Number(req.body.creditHours),
+      instructor: req.body.instructor.trim(),
+      description: req.body.description.trim()
     };
 
-    const response = await mongodb
-        .getDatabase()
-        .db()
-        .collection('Courses')
-        .replaceOne({ _id: courseId }, course);
-
+    const response = await mongodb.getDatabase().db().collection('Courses').replaceOne({ _id: courseId }, course);
     if (response.modifiedCount > 0) {
-        res.status(204).send();
+      res.status(204).send();
     } else {
-        res.status(500).json(response.error || 'Error updating course.');
+      res.status(500).json(response.error || 'Error updating course.');
     }
+  });
 };
 
-// DELETE COURSE
 const deleteCourse = async (req, res) => {
-    const courseId = new ObjectId(req.params.id);
-
-    const response = await mongodb
-        .getDatabase()
-        .db()
-        .collection('Courses')
-        .deleteOne({ _id: courseId });
-
-    if (response.deletedCount > 0) {
-        res.status(204).send();
-    } else {
-        res.status(500).json(response.error || 'Error deleting course.');
-    }
+  const courseId = new ObjectId(req.params.id);
+  const response = await mongodb.getDatabase().db().collection('Courses').deleteOne({ _id: courseId });
+  if (response.deletedCount > 0) {
+    res.status(204).send();
+  } else {
+    res.status(500).json(response.error || 'Error deleting course.');
+  }
 };
 
 module.exports = {
-    getAll,
-    getSingle,
-    createCourse,
-    updateCourse,
-    deleteCourse
+  getAll,
+  getSingle,
+  createCourse,
+  updateCourse,
+  deleteCourse,
+  validateRequest      // ← EXPORT IT
 };
