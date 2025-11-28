@@ -2,21 +2,14 @@ const express = require('express');
 const router = express.Router();
 
 const coursesController = require('../controllers/courses');
-const { validateRequest } = require('../controllers/courses');  // ← ADDED
+const { validateRequest } = require('../controllers/courses');
+const { ensureAuthenticated } = require('../middleware/authenticate');  // ← FIXED PATH + NAME
 
-// GET all courses
 router.get('/', coursesController.getAll);
-
-// GET course by ID
 router.get('/:id', coursesController.getSingle);
 
-// POST create new course
-router.post('/', validateRequest, coursesController.createCourse);     // ← ADDED
-
-// PUT update course
-router.put('/:id', validateRequest, coursesController.updateCourse);   // ← ADDED
-
-// DELETE course
-router.delete('/:id', coursesController.deleteCourse);
+router.post('/', ensureAuthenticated, validateRequest, coursesController.createCourse);
+router.put('/:id', ensureAuthenticated, validateRequest, coursesController.updateCourse);
+router.delete('/:id', ensureAuthenticated, coursesController.deleteCourse);
 
 module.exports = router;
