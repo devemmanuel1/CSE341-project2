@@ -5,10 +5,10 @@
     "description": "API documentation for CSE341 2nd project",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "cse341-project2-s0lc.onrender.com",
   "basePath": "/",
   "schemes": [
-    "http"
+    "https"
   ],
   "paths": {
     "/": {
